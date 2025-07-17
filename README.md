@@ -1,0 +1,2 @@
+# WinCheck
+GUI for Winget
