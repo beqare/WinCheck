@@ -2,10 +2,28 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const { spawn } = require("child_process");
 
+let mainWindow;
+let splash;
+
 function createWindow() {
-  const win = new BrowserWindow({
-    width: 600,
-    height: 400,
+  splash = new BrowserWindow({
+    width: 400,
+    height: 200,
+    frame: false,
+    alwaysOnTop: true,
+    transparent: false,
+    center: true,
+    resizable: false,
+    icon: path.join(__dirname, "icon.ico"),
+  });
+
+  splash.loadFile("splash.html");
+
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 800,
+    show: false,
+    icon: path.join(__dirname, "icon.ico"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: false,
@@ -13,10 +31,24 @@ function createWindow() {
     },
   });
 
-  win.loadFile("index.html");
+  mainWindow.loadFile("index.html");
 
-  // Menü entfernen
-  win.setMenu(null);
+  const minSplashTime = 2000;
+  const splashStart = Date.now();
+
+  mainWindow.once("ready-to-show", () => {
+    const elapsed = Date.now() - splashStart;
+    const waitTime = Math.max(minSplashTime - elapsed, 0);
+
+    setTimeout(() => {
+      if (splash) {
+        splash.close();
+      }
+      mainWindow.show();
+    }, waitTime);
+  });
+
+  mainWindow.setMenu(null);
 }
 
 app.whenReady().then(() => {
@@ -27,9 +59,8 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
 
-// Winget Befehle über IPC
 ipcMain.handle("check-updates", async () => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const winget = spawn("winget", ["upgrade"]);
     let output = "";
 
@@ -48,7 +79,7 @@ ipcMain.handle("check-updates", async () => {
 });
 
 ipcMain.handle("install-update", async (event, packageId) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const winget = spawn("winget", [
       "upgrade",
       "--id",

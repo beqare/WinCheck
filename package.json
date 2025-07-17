@@ -8,16 +8,26 @@
     "build": "electron-builder"
   },
   "keywords": [],
-  "author": "",
+  "author": "beqare",
   "license": "ISC",
   "devDependencies": {
     "electron": "^37.2.3",
     "electron-builder": "^26.0.12"
   },
   "build": {
-    "appId": "de.jonasgrimm.winupdate",
+    "appId": "de.beqare.wincheck",
     "win": {
-      "target": "nsis"
+      "icon": "icon.ico",
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "WinCheck"
     }
   }
 }
