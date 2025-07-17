@@ -1,0 +1,23 @@
+{
+  "name": "wincheck",
+  "version": "1.0.0",
+  "description": "GUI for Winget",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^37.2.3",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "de.jonasgrimm.winupdate",
+    "win": {
+      "target": "nsis"
+    }
+  }
+}

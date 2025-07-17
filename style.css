@@ -1,0 +1,194 @@
+/* Basis & Layout */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 30px 20px;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #e0e6f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+/* Custom Scrollbar Style */
+::-webkit-scrollbar {
+    width: 10px;
+    background: #203a43;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #0d6efd, #0056b3);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #0056b3, #0d6efd);
+}
+
+::-webkit-scrollbar-corner {
+    background: #203a43;
+}
+
+/* Firefox scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #0d6efd #203a43;
+}
+/* Überschrift */
+h1 {
+  font-weight: 900;
+  font-size: 2.5rem;
+  letter-spacing: 1.5px;
+  margin-bottom: 25px;
+  color: #f0f8ff;
+  text-shadow: 0 2px 6px rgba(0, 123, 255, 0.8);
+  text-align: center;
+}
+
+/* Button Style */
+button {
+  background: linear-gradient(145deg, #0d6efd, #0056b3);
+  border: none;
+  color: white;
+  padding: 12px 25px;
+  margin: 15px auto;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.6);
+  transition: all 0.25s ease;
+  min-width: 180px;
+  display: block;
+  user-select: none;
+}
+
+button:hover:not(:disabled) {
+  background: linear-gradient(145deg, #0056b3, #0d6efd);
+  box-shadow: 0 6px 20px rgba(13, 110, 253, 0.9);
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  max-width: 620px;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #cdd6f4;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  background: rgba(30, 40, 60, 0.6);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Table Header */
+thead tr {
+  background: #1f2937;
+  color: #a5b4fc;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+  box-shadow: inset 0 -1px 0 #374151;
+}
+
+th, td {
+  padding: 15px 20px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Table rows */
+tbody tr {
+  background: #111827;
+  transition: background-color 0.3s ease;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  cursor: default;
+}
+
+tbody tr:hover {
+  background: #374151;
+}
+
+/* Update Button */
+.update-btn {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.6);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  user-select: none;
+}
+
+.update-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  box-shadow: 0 6px 25px rgba(34, 197, 94, 0.85);
+  transform: translateY(-2px);
+}
+
+.update-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Spinner */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top: 3px solid #ffffff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+/* Responsive - mobil gut aussehen */
+@media (max-width: 480px) {
+  body {
+    padding: 20px 10px;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  table {
+    font-size: 0.9rem;
+  }
+  button.update-btn {
+    min-width: 80px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+}
