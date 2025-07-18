@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>WinCheck Update</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #e0e6f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      border: none;
+      background: #0d6efd;
+      color: white;
+      box-shadow: 0 4px 15px rgba(13, 110, 253, 0.6);
+      transition: 0.3s ease;
+    }
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    #progress {
+      margin-top: 15px;
+      width: 100%;
+      background: #203a43;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 20px;
+    }
+    #progress-bar {
+      background: #0d6efd;
+      height: 100%;
+      width: 0;
+      transition: width 0.3s ease;
+    }
+    #status {
+      margin-top: 10px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <h1>WinCheck Update</h1>
+  <button id="checkUpdateBtn">Auf Updates prüfen</button>
+  <button id="downloadUpdateBtn" disabled>Update herunterladen</button>
+  <button id="installUpdateBtn" disabled>Update installieren</button>
+
+  <div id="progress">
+    <div id="progress-bar"></div>
+  </div>
+  <div id="status"></div>
+
+  <script>
+    const checkBtn = document.getElementById("checkUpdateBtn");
+    const downloadBtn = document.getElementById("downloadUpdateBtn");
+    const installBtn = document.getElementById("installUpdateBtn");
+    const progressBar = document.getElementById("progress-bar");
+    const status = document.getElementById("status");
+
+    checkBtn.addEventListener("click", async () => {
+      status.textContent = "Suche nach Updates...";
+      const result = await window.api.checkForUpdate();
+      if (result) {
+        status.textContent = "Update verfügbar!";
+        downloadBtn.disabled = false;
+      } else {
+        status.textContent = "Keine Updates verfügbar";
+      }
+    });
+
+    downloadBtn.addEventListener("click", async () => {
+      status.textContent = "Update wird heruntergeladen...";
+      downloadBtn.disabled = true;
+      await window.api.downloadUpdate();
+    });
+
+    installBtn.addEventListener("click", () => {
+      status.textContent = "Update wird installiert...";
+      window.api.installUpdateApp();
+    });
+
+    window.api.onUpdateAvailable(() => {
+      status.textContent = "Update gefunden!";
+      downloadBtn.disabled = false;
+    });
+
+    window.api.onUpdateNotAvailable(() => {
+      status.textContent = "Keine Updates verfügbar.";
+    });
+
+    window.api.onDownloadProgress((progress) => {
+      const percent = Math.floor(progress.percent);
+      progressBar.style.width = percent + "%";
+      status.textContent = `Lade herunter: ${percent}%`;
+      if (percent > 0) {
+        installBtn.disabled = false;
+      }
+    });
+
+    window.api.onUpdateDownloaded(() => {
+      status.textContent = "Update heruntergeladen! Bereit zur Installation.";
+      installBtn.disabled = false;
+      downloadBtn.disabled = true;
+    });
+  </script>
+</body>
+</html>

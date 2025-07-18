@@ -14,6 +14,8 @@ function createWindow() {
     transparent: false,
     center: true,
     resizable: false,
+
+    transparent: true,
     icon: path.join(__dirname, "icon.ico"),
   });
 
@@ -23,6 +25,7 @@ function createWindow() {
     width: 800,
     height: 800,
     show: false,
+    
     icon: path.join(__dirname, "icon.ico"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -41,9 +44,7 @@ function createWindow() {
     const waitTime = Math.max(minSplashTime - elapsed, 0);
 
     setTimeout(() => {
-      if (splash) {
-        splash.close();
-      }
+      if (splash) splash.close();
       mainWindow.show();
     }, waitTime);
   });
@@ -61,7 +62,7 @@ app.on("window-all-closed", () => {
 
 ipcMain.handle("check-updates", async () => {
   return new Promise((resolve) => {
-    const winget = spawn("winget", ["upgrade"]);
+    const winget = spawn("winget", ["upgrade", "--include-unknown"]);
     let output = "";
 
     winget.stdout.on("data", (data) => {
@@ -86,6 +87,7 @@ ipcMain.handle("install-update", async (event, packageId) => {
       packageId,
       "--accept-source-agreements",
       "--accept-package-agreements",
+      "--include-unknown",
     ]);
 
     winget.stdout.on("data", (data) => {

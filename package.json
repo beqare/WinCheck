@@ -12,7 +12,8 @@
   "license": "ISC",
   "devDependencies": {
     "electron": "^37.2.3",
-    "electron-builder": "^26.0.12"
+    "electron-builder": "^26.0.12",
+    "electron-updater": "^6.6.2"
   },
   "build": {
     "appId": "de.beqare.wincheck",
@@ -22,6 +23,7 @@
         "nsis"
       ]
     },
+    
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,

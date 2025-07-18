@@ -3,25 +3,12 @@ const updatesTable = document.getElementById("updatesTable");
 const tbody = updatesTable.querySelector("tbody");
 
 function parseWingetOutput(output) {
-  /*
-    winget upgrade Ausgabe sieht so aus:
-
-    Name                        Id                           Version        Available      Source
-    -------------------------------------------------------------------------------------------
-    7-Zip 21.07 (x64)           7zip.7zip                    21.07          22.01         winget
-
-    Wir parsen Zeilen nach Spalten (Name, Id, Version, Available)
-  */
-
   const lines = output.trim().split("\n");
-  // Erste zwei Zeilen sind header, dann Daten
   if (lines.length < 3) return [];
 
-  // Ab Zeile 3 starten die Daten
   const dataLines = lines.slice(2);
 
   const updates = dataLines.map((line) => {
-    // Trennungen sind mit vielen Leerzeichen, splitte mit Regex
     const cols = line.trim().split(/\s{2,}/);
     return {
       name: cols[0],
@@ -60,30 +47,27 @@ async function checkUpdates() {
   checkBtn.disabled = false;
   checkBtn.textContent = "Check for Updates";
 
-  // Update-Button Events
   document.querySelectorAll(".update-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
       const id = btn.getAttribute("data-id");
       btn.disabled = true;
       btn.textContent = "Installing";
 
-      // Spinner erstellen und an Button anhängen
       const spinner = document.createElement("span");
       spinner.classList.add("spinner");
       btn.appendChild(spinner);
 
       const success = await window.api.installUpdate(id);
 
-      // Spinner entfernen
       btn.removeChild(spinner);
 
       if (success) {
         btn.textContent = "Done";
-        btn.style.backgroundColor = "#28a745"; // grün
+        btn.style.backgroundColor = "#55bd6dff";
       } else {
         btn.textContent = "Error";
         btn.disabled = false;
-        btn.style.backgroundColor = "#dc3545"; // rot
+        btn.style.backgroundColor = "#df6672ff";
       }
     });
   });
